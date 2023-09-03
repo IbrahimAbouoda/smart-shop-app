@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "297053693704",
+    "project_id": "gaza-shop-1",
+    "storage_bucket": "gaza-shop-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297053693704:android:a2004c3a022816ac082ebd",
+        "android_client_info": {
+          "package_name": "com.example.gaza_shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297053693704-v2l9e440rt9pqbph57vb09125lmuhva6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC67L0ZvNxHUScNwpcEMmLv42OIiWZjJyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297053693704-v2l9e440rt9pqbph57vb09125lmuhva6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
