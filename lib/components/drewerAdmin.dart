@@ -69,7 +69,7 @@ class DrwerAdmin extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.redo_sharp),
+                  leading: const Icon(Icons.person_search_outlined),
                   title: const Text('المشتريين'),
                   onTap: () {
                     Navigator.pushNamed(context, "/showUser");
@@ -91,12 +91,7 @@ class DrwerAdmin extends StatelessWidget {
                     Navigator.pushNamed(context, "/AddProduct");
                   },
                 ),
-                ListTileProfiles(
-                    onTap: () {},
-                    iconData: Icons.security,
-                    titel: "الشروط والاحكام"),
-                ListTileProfiles(
-                    onTap: () {}, iconData: Icons.share, titel: "مشاركة"),
+               
                 ListTileProfiles(
                     onTap: () {},
                     iconData: Icons.info_outlined,

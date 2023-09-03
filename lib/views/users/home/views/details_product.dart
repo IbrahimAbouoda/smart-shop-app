@@ -6,14 +6,14 @@ import '../../../../core/utils/constant.dart';
 import '../../../../models/product_model.dart';
 import '../../../../service/backend/product_service.dart';
 
-class HomeAdmin extends StatefulWidget {
-  const HomeAdmin({Key? key}) : super(key: key);
+class DetailsProduct extends StatefulWidget {
+  const DetailsProduct({Key? key}) : super(key: key);
 
   @override
-  State<HomeAdmin> createState() => _HomeAdminState();
+  State<DetailsProduct> createState() => _DetailsProductState();
 }
 
-class _HomeAdminState extends State<HomeAdmin> {
+class _DetailsProductState extends State<DetailsProduct> {
   final productService = ProductService();
   late Future<List<ProductModel>> products;
   final TextEditingController searchController = TextEditingController();

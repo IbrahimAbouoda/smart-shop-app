@@ -8,13 +8,14 @@ class UserModel {
   String email;
   String role;
   String? token;
+  double total = 0.0;
 
   UserModel({
     required this.imageUrl,
     required this.name,
     required this.email,
     required this.role,
-    required this.token,
+    required this.token, required total,
   });
 
   factory UserModel.fromFirebase(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -25,6 +26,7 @@ class UserModel {
       email: data?['email'],
       role: data?['role'],
       token: data?['token'],
+      total:data?['total'],
     );
   }
   // Factory constructor to create a UserModel instance from a map (JSON).
@@ -35,6 +37,7 @@ class UserModel {
       email: data['email'],
       role: data['role'],
       token: data['token'],
+       total: data['total'],
     );
   }
 
@@ -45,6 +48,7 @@ class UserModel {
       "email": email,
       "role": role,
       "token": token,
+      "total":total,
     };
   }
 }

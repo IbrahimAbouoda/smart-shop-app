@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:gaza_shop/views/General/login/widgets/animated_cross.dart';
+import 'package:gaza_shop/views/General/login/widgets/auth_text_f.dart';
+import 'package:gaza_shop/views/General/login/widgets/toggle_b.dart';
 
 import '../../../core/shared_preferences/shared_preferences.dart';
 import '../../../core/utils/app_images.dart';
@@ -8,9 +11,6 @@ import '../../../core/utils/constant.dart';
 import '../../../service/backend/outh_service.dart';
 import '../../../service/firebase/auth.dart';
 import 'models/user.dart';
-import 'widgets/animated_cross.dart';
-import 'widgets/auth_text_f.dart';
-import 'widgets/toggle_b.dart';
 
 class LoginAdminScreen extends StatefulWidget {
   static const id = '/authScreen';
@@ -22,33 +22,6 @@ class LoginAdminScreen extends StatefulWidget {
 }
 
 class _LoginAdminScreenState extends State<LoginAdminScreen> {
-  Future<void> _signUp() async {
-    try {
-      final String email = _emailController.text.trim();
-      final String password = _passwordController.text.trim();
-
-      final newUser = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      if (newUser.user != null) {
-        Navigator.pushNamed(context, "/success");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Regisiration user ${newUser.user!.email}")));
-      } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(newUser.credential.toString())));
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-
-    //Implement registration functionality.
-  }
-
   String switched = 'login';
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -170,6 +143,8 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                             switched: switched,
                                           ),
                                           AuthTextField(
+                                            keyboardType:
+                                                TextInputType.emailAddress,
                                             hint: 'Enter email',
                                             controller: _emailController,
                                           ),
@@ -177,6 +152,8 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                             height: 8,
                                           ),
                                           AuthTextField(
+                                            keyboardType:
+                                                TextInputType.visiblePassword,
                                             hint: 'Enter password',
                                             controller: _passwordController,
                                           ),
@@ -202,7 +179,8 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                           ConstantStayles
                                                               .kPrimColor,
                                                     ),
-                                                    const Text("تسجيل كتاجر ?")
+                                                    const Text(
+                                                        "Are you admin ?")
                                                   ],
                                                 ),
                                           const SizedBox(
@@ -249,7 +227,6 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                                     .user !=
                                                                 null) {
                                                               UserModel? user =
-                                                                  // ignore: use_build_context_synchronously
                                                                   await FbAuthentication.getUserData(
                                                                       context,
                                                                       _emailController
@@ -268,7 +245,6 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                                         null &&
                                                                     user.token !=
                                                                         myTokenNow) {
-                                                                  // ignore: use_build_context_synchronously
                                                                   await FbAuthentication.updateUserToken(
                                                                       context,
                                                                       _emailController
@@ -285,20 +261,15 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                                 if (user.role ==
                                                                     UserRole
                                                                         .admin
-                                                                        .name) 
+                                                                        .name) {
                                                                   // ignore: use_build_context_synchronously
                                                                   Navigator.pushNamed(
                                                                       context,
                                                                       "/homeAdmin");
-                                                                if(user.role ==
-                                                                    UserRole
-                                                                        .user
-                                                                        .name) 
-                                                                  Navigator.pushNamed(
-                                                                      context,
-                                                                      "/homeUser");
-                                                                
-
+                                                                } else {}
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    "/homeUser");
                                                                 ScaffoldMessenger.of(
                                                                         context)
                                                                     .showSnackBar(
@@ -367,6 +338,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                                           .name);
                                                           UserModel user =
                                                               UserModel(
+                                                            total: 0.0,
                                                             imageUrl: null,
                                                             name:
                                                                 _nameController
@@ -397,17 +369,17 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                             await SharedPrefController
                                                                 .setUserData(
                                                                     user);
+
                                                             if (user.role ==
                                                                 UserRole.admin
-                                                                    .name) 
+                                                                    .name) {
                                                               Navigator.pushNamed(
                                                                   context,
                                                                   "/homeAdmin");
-                                                             if(user.role==UserRole.user.name)
-                                                              Navigator.pushNamed(
-                                                                  context,
-                                                                  "/homeUser");
-                                                            
+                                                            } else {}
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                "/homeUser");
                                                           }
                                                         } catch (error) {
                                                           ScaffoldMessenger.of(

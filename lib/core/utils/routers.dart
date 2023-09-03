@@ -11,7 +11,7 @@ import '../../views/General/login/success.dart';
 import '../../views/admin/add products/views/add_product_screen1.dart';
 import '../../views/admin/add store/add_store_screen.dart';
 import '../../views/admin/count bay/count_bay.dart';
-import '../../views/admin/home/views/home_distrbute_screen.dart';
+import '../../views/admin/home/views/home_distrbute_screen.dart' as AdminHome;
 import '../../views/admin/notoficatios/notifictions.dart';
 import '../../views/admin/profile/views/edit_profile.dart';
 import '../../views/admin/profile/views/myProfile.dart';
@@ -23,11 +23,13 @@ import '../../views/users/home/views/homeUser.dart';
 import '../../views/users/home/views/home_category.dart';
 import '../../views/users/show admins/show_admins.dart';
 import '../../views/users/show all products/car_pay_product.dart';
-import '../../views/users/show all products/details_product.dart';
+import '../../views/users/home/views/details_product.dart';
+
+import '../../components/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
-  "/": (context) => const HomeCategory(),
-  "/homeAdmin": (context) => const HomeAdmin(),
+  "/": (context) => LoginAdminScreen(),
+  "/homeAdmin": (context) => AdminHome.HomeAdmin(),
   "/AddStore": (context) => const AddStore(),
   "/AddProduct1": (context) => const AddProduct(),
   "/profile": (context) => Profile(),
@@ -47,13 +49,13 @@ Map<String, Widget Function(BuildContext)> routes = {
   "/homeCategory": (context) => const HomeCategory(),
   "/showAdmin": (context) => ShowAdmins(),
   "/menuUser": (context) => DrewerUser(),
-  "/details_product": (context) => const DetailsProduct(),
+  "/details_product": (context) => DetailsProduct(),
   "/carPay": (context) => const CarPayProduct(),
-//-
+  //-
   "/define": (context) => const Defin1(),
   "/changePass": (context) => const ChangePass(),
   "/forget": (context) => const Forget(),
   "/whome": (context) => const WhoME(),
   "/settings": (context) => const Settings(),
-
 };
+

@@ -6,7 +6,9 @@ class AnimatedCrossFadeBox extends StatelessWidget {
   const AnimatedCrossFadeBox({
     super.key,
     required TextEditingController nameController,
-    required this.switched, required this.hint, required this.swith,
+    required this.switched,
+    required this.hint,
+    required this.swith,
   }) : _nameController = nameController;
 
   final TextEditingController _nameController;
@@ -22,7 +24,11 @@ class AnimatedCrossFadeBox extends StatelessWidget {
       firstChild: Container(),
       secondChild: Column(
         children: [
-          AuthTextField(hint: hint, controller: _nameController),
+          AuthTextField(
+              hint: hint,
+              controller: _nameController,
+              keyboardType:
+                  hint == "Name" ? null : TextInputType.visiblePassword),
           const SizedBox(
             height: 8,
           ),

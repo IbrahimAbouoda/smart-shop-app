@@ -7,7 +7,32 @@ import '../../models/product_model.dart';
 class ProductService extends ChangeNotifier {
   static var productUrl = 'https://shop-smart.phoniexcode.com/api/products';
 
+  Future<List<ProductModel>> searchProducts(String query) async {
+    final url = Uri.parse('your_api_endpoint_here'); // Replace with your API endpoint
 
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<ProductModel> products = []; // Create a list to store products
+
+        // Parse the response JSON and filter products based on the query
+        // Example: Filter products where the name or price contains the query
+        final parsedData = json.decode(response.body);
+        for (var item in parsedData) {
+          final product = ProductModel.fromJson(item); // Deserialize product data
+          if (product.name.contains(query) || product.price.toString().contains(query)) {
+            products.add(product);
+          }
+        }
+
+        return products; // Return the filtered list of products
+      } else {
+        throw Exception('Failed to load products');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
   Future<List<ProductModel>> getProducts() async {
     try {
       final http.Response response = await http.get(Uri.parse(productUrl));

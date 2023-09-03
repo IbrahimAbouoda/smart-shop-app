@@ -1,9 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../../components/widgets/general_widgets/buttonApp.dart';
-import '../../../../core/utils/app_images.dart';
 
 class EditProfile extends StatefulWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -22,6 +24,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  File? _selectedImage; // Store the selected image file
 
   @override
   void initState() {
@@ -44,27 +47,29 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              updateUserData();
-            },
-            icon: const Icon(
-              Icons.edit_square,
-              size: 40,
-            ),
-          )
-        ],
+        actions: const [],
         leading: TextButton(
-          child: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+            child: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushNamed(context, "/profile")),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(Assets.imagesLogo),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                // Show image picker when the user taps the image
+                selectImage();
+              },
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: _selectedImage != null
+                    ? FileImage(_selectedImage!)
+                    : null, // Remove the default image
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
@@ -86,14 +91,30 @@ class _EditProfileState extends State<EditProfile> {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ButtonAppBar1(
-                onTapHome: () => Navigator.pushNamed(context, "/homeAdmin"),
-              ),
+              TextButton(
+                  child:
+                      const Text('حفظ'), // Add buttonText for the "Save" button
+                  onPressed: () {
+                    updateUserData();
+                    Navigator.pushNamed(context, "/profile");
+                  }),
             ],
           ),
         ],
       ),
     );
+  }
+
+  // Function to open image picker
+  Future<void> selectImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImage = File(pickedImage.path);
+      });
+    }
   }
 
   Future<void> updateUserData() async {
@@ -109,6 +130,24 @@ class _EditProfileState extends State<EditProfile> {
           .collection('Users')
           .doc(widget._auth.currentUser!.email)
           .update(updatedData);
+
+      if (_selectedImage != null) {
+        final imageFileName = 'user_${widget._auth.currentUser!.uid}.jpg';
+        final imageRef = FirebaseStorage.instance.ref().child(imageFileName);
+
+        final uploadTask = imageRef.putFile(_selectedImage!);
+
+        await uploadTask.whenComplete(() async {
+          final imageUrl = await imageRef.getDownloadURL();
+
+          // Update the 'image' field in Firestore with the imageUrl
+          await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(widget._auth.currentUser!.email)
+              .update({'image': imageUrl});
+        });
+      }
+
       print('User data updated successfully.');
     } catch (e) {
       print('Error updating user data: $e');
