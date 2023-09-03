@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import '../../components/derwer_user.dart';
 import '../../components/drewerAdmin.dart';
 import '../../components/who_me.dart';
-import '../../components/widgets/settings.dart';
+import '../settings/settings.dart';
 import '../../views/General/change_pass_screen.dart';
 import '../../views/General/defineing/presintation/define1_screen.dart';
 import '../../views/General/forget_pass_screen.dart';

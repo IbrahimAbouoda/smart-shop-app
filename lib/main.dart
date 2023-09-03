@@ -1,7 +1,8 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gaza_shop/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 import 'components/general_provider.dart';
@@ -23,31 +24,23 @@ void main() async {
 
   // Now, you can set up other initializations
 
-
-
   FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
     SharedPrefController.saveToken(newToken);
-
   });
 
-
-
   runApp(MultiProvider(providers: [
-  ChangeNotifierProvider<ProductProvider>(create: (context) => ProductProvider()),
-  ChangeNotifierProvider<ProductService>(create: (context) => ProductService()),
-  ChangeNotifierProvider<GeneralProvider>(
-  create: (context) => GeneralProvider()),
-  // ChangeNotifierProvider<CategoriesProvider>(
-  // create: (context) => CategoriesProvider()),
-  // ChangeNotifierProvider<MailsByTagsProvider>(
-  // create: (context) => MailsByTagsProvider()),
-  ],child: const MyApp()));
+    ChangeNotifierProvider<ProductProvider>(
+        create: (context) => ProductProvider()),
+    ChangeNotifierProvider<ProductService>(
+        create: (context) => ProductService()),
+    ChangeNotifierProvider<GeneralProvider>(
+        create: (context) => GeneralProvider()),
+    // ChangeNotifierProvider<CategoriesProvider>(
+    // create: (context) => CategoriesProvider()),
+    // ChangeNotifierProvider<MailsByTagsProvider>(
+    // create: (context) => MailsByTagsProvider()),
+  ], child: const MyApp()));
 }
-
-
-
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -56,6 +49,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale('ar'),
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

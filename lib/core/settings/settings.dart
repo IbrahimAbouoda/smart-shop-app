@@ -32,6 +32,18 @@ class Settings extends StatelessWidget {
                 )),
           ),
         ),
+        InkWell(
+          onTap: () => Navigator.pushNamed(context, "/editProfile"),
+          child: Card(
+            shape: Border.all(),
+            child: ListTile(
+                leading: const Icon(Icons.edit),
+                trailing: Text(
+                  " الوضع الليلي",
+                  style: ConstantStayles.style1,
+                )),
+          ),
+        ),
       ]),
     );
   }
