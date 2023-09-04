@@ -28,7 +28,7 @@ import '../../views/users/home/views/details_product.dart';
 import '../../components/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
-  "/": (context) => LoginAdminScreen(),
+  "/": (context) =>  HomeUser(),
   "/homeAdmin": (context) => AdminHome.HomeAdmin(),
   "/AddStore": (context) => const AddStore(),
   "/AddProduct1": (context) => const AddProduct(),

@@ -11,15 +11,6 @@ class HomeCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List imag = [
-      Assets.man2,
-      Assets.man1,
-      Assets.man2_1,
-      Assets.man2_3,
-      Assets.man2_3,
-      Assets.mans,
-      Assets.imagesFustan
-    ];
     final productService = ProductService();
     final Future<List<ProductModel>> products = productService.getProducts();
     return Scaffold(
@@ -31,7 +22,7 @@ class HomeCategory extends StatelessWidget {
         ),
         body: Column(children: [
           ChoosTager(onTap: () {
-            Navigator.pushNamed(context, "/details_product");
+            Navigator.pushNamed(context, "/homeAdmin");
           }),
           Expanded(
               flex: 6,
@@ -46,23 +37,32 @@ class HomeCategory extends StatelessWidget {
                       return const Center(child: Text('No users available.'));
                     } else {
                       return ListView.builder(
-                          itemCount: 7,
+                          itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             final product = snapshot.data![index];
-                            return NewListCategoris(
-                              image: imag[index],
-                              title: "",
-                              comparePrice: product.comparePrice.toString(),
-                              name: product.name,
-                              price: product.price.toString(),
-                              qutity: product.quantity.toString(),
+                            return GestureDetector(
+                              child: NewListCategoris(
+                                image: product.imageUrl,
+                                title: "الترند",
+                                comparePrice: product.comparePrice.toString(),
+                                name: product.name,
+                                price: product.price.toString(),
+                                qutity: product.quantity.toString(),
+                              ),
+                              onTap: () =>
+                                  Navigator.pushNamed(
+                                      context, "/details_product"),
                             );
                           });
                     }
                   })),
           ButtonAppBar1(
-              onTapHome: () => Navigator.pushNamed(context, "/homeUser")),
-        ]));
+              onTapHome: () => Navigator.pushNamed(context, "/homeUser")
+          )
+          ,
+        ]
+        )
+    );
   }
 }
 
@@ -82,79 +82,75 @@ class NewListCategoris extends StatelessWidget {
   final String name;
   final String qutity;
   final String image;
+
   @override
   Widget build(BuildContext context) {
-    List images = [
-      Assets.man1,
-      Assets.imagesForget,
-      Assets.man2_3,
-      Assets.man2_3,
-      Assets.man2_3
-    ];
-    int i;
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.topRight,
-          child: Text(title, style: const TextStyle(fontSize: 20)),
-        ),
-        SizedBox(
-          width: double.infinity,
-          height: 300,
-          child: Container(
-            height: 270,
-            width: 210,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: const Color(0xffD9D9D9),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  color: Colors.grey,
-                  height: 200,
-                  child: Image.asset(
-                    image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(qutity,
-                              style: const TextStyle(color: Colors.blue)),
-                          Text(
-                            "\$$price",
-                            style: const TextStyle(color: Colors.blue),
-                          ),
-                          Text(
-                            "\$$comparePrice",
-                            style: const TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.red),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, "/details_product"),
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.topRight,
+            child: Text(title, style: const TextStyle(fontSize: 20)),
           ),
-        )
-      ],
+          SizedBox(
+            width: double.infinity,
+            height: 300,
+            child: Container(
+              height: 270,
+              width: 210,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: const Color(0xffD9D9D9),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    color: Colors.grey,
+                    height: 200,
+                    child: Image.network(
+                      image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(qutity,
+                                style: const TextStyle(color: Colors.blue)),
+                            Text(
+                              "\$$price",
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                            Text(
+                              "\$$comparePrice",
+                              style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                  color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

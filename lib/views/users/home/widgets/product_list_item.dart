@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../../core/utils/app_images.dart';
 import 'products_model.dart';
-
-
-
 
 class ProductListItem extends StatelessWidget {
   final Product product;
@@ -27,7 +23,7 @@ class ProductListItem extends StatelessWidget {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(8)),
               child: Image.asset(
-                Assets.imagesLogo,
+                Assets.logo,
                 height: 120,
                 width: double.infinity,
                 fit: BoxFit.cover,

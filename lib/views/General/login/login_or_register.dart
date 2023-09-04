@@ -78,7 +78,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),
                                 child: Image.asset(
-                                  Assets.imagesLogo,
+                                  Assets.logo,
                                   width: 200,
                                 ),
                               ),
@@ -179,8 +179,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                           ConstantStayles
                                                               .kPrimColor,
                                                     ),
-                                                    const Text(
-                                                        "Are you admin ?")
+                                                    const Text(" انت تاجر ؟")
                                                   ],
                                                 ),
                                           const SizedBox(
@@ -313,22 +312,14 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                     }
                                                   : () async {
                                                       setState(() {
-                                                        showProgress = true;
+                                                      Navigator.pushNamed(
+                                                                context,
+                                                                "/login_signUp");
                                                       });
                                                       if (_formKey.currentState!
                                                           .validate()) {
                                                         try {
-                                                          FbAuthentication
-                                                              .signUpWithEmailAndPassword(
-                                                            _emailController
-                                                                .text
-                                                                .toString()
-                                                                .trim(),
-                                                            _passwordController
-                                                                .text
-                                                                .toString()
-                                                                .trim(),
-                                                          );
+                                                          signUp();
 
                                                           String? myTokenNow =
                                                               SharedPrefController
@@ -356,12 +347,8 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                             token: myTokenNow,
                                                           );
                                                           bool isCreated =
-                                                              await FbAuthentication
-                                                                  .addNewUser(
-                                                                      context,
-                                                                      user);
-                                                          if (isCreated &&
-                                                              mounted) {
+                                                              await addNewUser(context, user);
+                                                          if (isCreated) {
                                                             setState(() {
                                                               showProgress =
                                                                   false;
@@ -373,13 +360,14 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                             if (user.role ==
                                                                 UserRole.admin
                                                                     .name) {
+                                                              // ignore: use_build_context_synchronously
                                                               Navigator.pushNamed(
                                                                   context,
                                                                   "/homeAdmin");
                                                             } else {}
                                                             Navigator.pushNamed(
                                                                 context,
-                                                                "/homeUser");
+                                                                "/login_signUp");
                                                           }
                                                         } catch (error) {
                                                           ScaffoldMessenger.of(
@@ -426,6 +414,20 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                 ),
         ),
       ),
+    );
+  }
+
+  Future<bool> addNewUser(BuildContext context, UserModel user) {
+    return FbAuthentication
+                                                                .addNewUser(
+                                                                    context,
+                                                                    user);
+  }
+
+  signUp() {
+    FbAuthentication.signUpWithEmailAndPassword(
+      _emailController.text.toString().trim(),
+      _passwordController.text.toString().trim(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 import '../models/product_model.dart';
 import '../service/backend/product_service.dart';
@@ -21,6 +22,10 @@ class ProductProvider with ChangeNotifier {
   //     imageUrl: '',
   //   );
   // }
+  String removeHtmlTags(String htmlString) {
+    final unescape = HtmlUnescape();
+    String noHtml = unescape.convert(htmlString); // Decode HTML entities
+    return noHtml.replaceAll(RegExp(r'<[^>]*>'), '');}
   Future<void> fetchAndSetProducts() async {
     try {
       final products = ProductService();

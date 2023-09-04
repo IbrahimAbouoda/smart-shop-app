@@ -3,20 +3,23 @@ import 'package:flutter/material.dart';
 import '../../../../../../components/widgets/general_widgets/app_bar1.dart';
 import '../../../../../../components/widgets/general_widgets/buttonApp.dart';
 import '../../../core/utils/constant.dart';
+import '../../../models/product_model.dart';
+import '../../../service/backend/product_service.dart';
 
 class CarPayProduct extends StatelessWidget {
   const CarPayProduct({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final productService = ProductService();
+    final Future<List<ProductModel>> products = productService.getProducts();
     return Scaffold(
+      appBar: AppBar(title: Text("سلة المشتريات"),),
       body: Column(children: [
         const SizedBox(
           height: 20,
         ),
-        const TopBarApp1(
-          titel: "سلة المشتريات",
-        ),
+
         Expanded(
           flex: 8,
           child: ListView.builder(
@@ -47,15 +50,15 @@ class CarPayProduct extends StatelessWidget {
                       alignment: Alignment.center,
                       height: 50,
                       margin: const EdgeInsets.all(8),
-                      color: Colors.blue,
-                      child: const Text("شراء الان"))),
+                      color: ConstantStayles.kPrimColor,
+                      child:  Text("شراء الان",style: ConstantStayles.styleLight,))),
               Expanded(
                   child: Container(
                       alignment: Alignment.center,
                       height: 50,
                       margin: const EdgeInsets.all(8),
-                      color: Colors.blue,
-                      child: const Text("اجمالي المبلغ 600"))),
+                      color: ConstantStayles.kPrimColor,
+                      child:  Text("اجمالي المبلغ 600",style: ConstantStayles.styleLight,))),
             ])),
         Expanded(
             flex: 1,

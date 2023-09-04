@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum UserRole {admin, user}
+enum UserRole { admin, user }
 
 class UserModel {
   String? imageUrl;
@@ -8,17 +8,19 @@ class UserModel {
   String email;
   String role;
   String? token;
-  double total = 0.0;
+ double? total;
 
   UserModel({
     required this.imageUrl,
     required this.name,
     required this.email,
     required this.role,
-    required this.token, required total,
+    required this.token,
+    required total,
   });
 
-  factory UserModel.fromFirebase(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  factory UserModel.fromFirebase(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
     return UserModel(
       imageUrl: data?['imageUrl'],
@@ -26,7 +28,7 @@ class UserModel {
       email: data?['email'],
       role: data?['role'],
       token: data?['token'],
-      total:data?['total'],
+      total: data?['total'],
     );
   }
   // Factory constructor to create a UserModel instance from a map (JSON).
@@ -37,7 +39,7 @@ class UserModel {
       email: data['email'],
       role: data['role'],
       token: data['token'],
-       total: data['total'],
+      total: data['total'],
     );
   }
 
@@ -48,7 +50,7 @@ class UserModel {
       "email": email,
       "role": role,
       "token": token,
-      "total":total,
+      "total": total,
     };
   }
 }

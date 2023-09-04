@@ -31,7 +31,7 @@ class Assets {
 
   /// Assets for imagesLogo
   /// assets/images/Logo.png
-  static const String imagesLogo = "assets/images/Logo.png";
+  static const String logo = "assets/images/Logo.png";
 
   /// Assets for imagesSignup
   /// assets/images/signup.png
@@ -54,4 +54,5 @@ class Assets {
   static const String children = "assets/images/children.png";
   static const String harim = "assets/images/harim.png";
   static const String manCategor = "assets/images/mansCategory.png";
+  static const String trend = "assets/images/trend.png";
 }

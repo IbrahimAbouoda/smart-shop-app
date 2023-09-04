@@ -6,7 +6,7 @@ import '../../models/stores_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 class StoreService {
-  final String apiUrl = "https://shop-smart.phoniexcode.com/api/stores";
+    final String apiUrl = "https://shop-smart.phoniexcode.com/api/stores";
   bool isPosting = true;
 
 

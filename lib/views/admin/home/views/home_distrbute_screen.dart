@@ -14,29 +14,36 @@ class HomeAdmin extends StatefulWidget {
 }
 
 class _HomeAdminState extends State<HomeAdmin> {
-  final productService = ProductService();
-  late Future<List<ProductModel>> products;
-  final TextEditingController searchController = TextEditingController();
+  // final productService = ProductService();
+  // late Future<List<ProductModel>> products;
+  // final TextEditingController searchController = TextEditingController();
 
+  List<ProductModel> products =
+      []; // Populate this list with data from ProductService
+  ProductService productService = ProductService();
   @override
   void initState() {
     super.initState();
-    // Initialize the product list when the widget is created
-    products = productService.getProducts();
-  }
-
-  void performSearch(String query) {
-    // You can use the 'query' to filter the products list
-    // and update the UI accordingly.
-    // Example: Filter products where the name contains the query.
-    products.then((list) {
-      final filteredList = list.where((product) => product.name.contains(query)).toList();
+    // Fetch products when the widget is initialized
+    productService.getProducts().then((productList) {
       setState(() {
-        // Update the product list with filtered results
-        productList = filteredList;
+        products = productList;
       });
     });
   }
+
+  // void performSearch(String query) {
+  //   // You can use the 'query' to filter the products list
+  //   // and update the UI accordingly.
+  //   // Example: Filter products where the name contains the query.
+  //   products.then((list) {
+  //     final filteredList = list.where((product) => product.name.contains(query)).toList();
+  //     setState(() {
+  //       // Update the product list with filtered results
+  //       productList = filteredList;
+  //     });
+  //   });
+  // }
 
   List<ProductModel> productList = [];
 
@@ -47,11 +54,11 @@ class _HomeAdminState extends State<HomeAdmin> {
         preferredSize: const Size.fromHeight(80),
         child: AppBarUserPages(
           hintText: "ابحث عن اسم المنتج",
-          controller: searchController,
-          onChange: (value) {
-            // Trigger search when the text changes
-            performSearch(value);
-          },
+          // controller: searchController,
+          // onChange: (value) {
+          //   // Trigger search when the text changes
+          //   performSearch(value);
+          // },
           onPressed: () {
             // You can add any additional actions when the search button is pressed
           },
@@ -65,44 +72,15 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: productList.length,
+              itemCount: products.length,
               itemBuilder: (context, index) {
-                final product = productList[index];
-                return Container(
-                  margin: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: const Color(0xff27374D),
-                    borderRadius: BorderRadius.circular(7),
-                    border: Border.all(
-                      color: ConstantStayles.kPrimColor,
-                    ),
-                  ),
-                  padding: const EdgeInsets.only(top: 5, bottom: 5, left: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          product.name,
-                          style: ConstantStayles.style2,
-                        ),
-                      ),
-                      const SizedBox(width: 40),
-                      Expanded(
-                        child: Text(
-                          "[ش] ${product.price}",
-                          style: ConstantStayles.style2,
-                        ),
-                      ),
-                      const SizedBox(width: 40),
-                      Expanded(
-                        child: Text(
-                          "${product.quantity}",
-                          style: ConstantStayles.style2,
-                        ),
-                      ),
-                    ],
-                  ),
+                final product = products[index];
+                return ListTile(
+                  title: Text(product.name),
+                  subtitle:
+                      Text('Price: \$${product.price.toStringAsFixed(2)}'),
+                  leading: Image.network(product.imageUrl),
+                  // Add more widgets to display other product information
                 );
               },
             ),

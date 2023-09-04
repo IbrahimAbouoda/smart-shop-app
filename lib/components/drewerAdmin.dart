@@ -34,7 +34,7 @@ class DrwerAdmin extends StatelessWidget {
                     color: ConstantStayles.kPrimColor,
                   ),
                   accountName: const CircleAvatar(
-                    backgroundImage: AssetImage(Assets.imagesLogo),
+                    backgroundImage: AssetImage(Assets.logo),
                   ),
                   accountEmail: Text(user?.email ?? "Email not available"),
                 ),
@@ -91,7 +91,6 @@ class DrwerAdmin extends StatelessWidget {
                     Navigator.pushNamed(context, "/AddProduct");
                   },
                 ),
-               
                 ListTileProfiles(
                     onTap: () {},
                     iconData: Icons.info_outlined,

@@ -25,7 +25,7 @@ class Profile extends StatelessWidget {
             InkWell(
                 onTap: () {},
                 child: Image.asset(
-                  Assets.imagesLogo,
+                  Assets.logo,
                   width: 30,
                   height: 30,
                 ))
@@ -39,7 +39,7 @@ class Profile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(Assets.imagesLogo),
+            Image.asset(Assets.logo),
             const SizedBox(height: 20),
             Expanded(
                 child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(

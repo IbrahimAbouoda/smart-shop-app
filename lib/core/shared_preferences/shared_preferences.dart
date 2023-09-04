@@ -13,7 +13,9 @@ enum Keys {
 class SharedPrefController {
   static late SharedPreferences sharedPreferences;
 
-  SharedPrefController._();
+
+
+ 
 
 
   static init() async {
@@ -32,6 +34,18 @@ class SharedPrefController {
   static saveTokenApi(String token) async {
     await sharedPreferences.setString("tokenApi", "6|08V870V75qk98QDUEnxxu8JxbI4HgdqIug56dxSp");
   }
+
+
+   Future<void> saveProductData(String name, double price, String image) async {
+    final productData = {
+      'name': name,
+      'price': price,
+      'image': image,
+    };
+
+    await sharedPreferences.setString('productData', jsonEncode(productData));
+  }
+
 
 
   UserModel getUserData(String? userJson) {

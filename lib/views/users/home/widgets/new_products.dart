@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/app_images.dart';
+
+import '../../../../core/shared_preferences/shared_preferences.dart';
 import '../../../../models/product_model.dart';
 import '../../../../service/backend/product_service.dart';
 
-class NewListCategoris extends StatelessWidget {
-  const NewListCategoris({
+class NewListCategories extends StatelessWidget {
+  const NewListCategories({
     Key? key,
     required this.title,
   }) : super(key: key);
+
   final String title;
+
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    List images = [
-      Assets.images,
-      Assets.imagesFustan,
-      Assets.man2_1,
-      Assets.man2
-    ];
-    // ignore: unused_local_variable
-    final ProductService productService = ProductService();
-    final Future<List<ProductModel>> products = ProductService().getProducts();
+    
 
     return Column(
       children: [
@@ -33,7 +27,7 @@ class NewListCategoris extends StatelessWidget {
           width: double.infinity,
           height: 300,
           child: FutureBuilder<List<ProductModel>>(
-            future: products,
+            future: ProductService().getProducts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -46,22 +40,35 @@ class NewListCategoris extends StatelessWidget {
               } else {
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 4,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final product = snapshot.data![index];
-                    return CardNewProducts(
-                      quntity: product.quantity,
-                      name: product.name,
-                      compasrPrice: product.comparePrice,
-                      price: product.price,
-                      image: images[index],
+                  SharedPrefController prefController = SharedPrefController(); // Create an instance of SharedPrefController
+
+                    return InkWell(
+                      onTap: () {
+                        prefController.saveProductData(
+                          product.name, // Use product name
+                          product.price, // Use product price
+                          product.imageUrl, // Use product image URL
+                        );
+
+                        Navigator.pushNamed(context, "/details_product");
+                      },
+                      child: CardNewProducts(
+                        quantity: product.quantity,
+                        name: product.name,
+                        comparePrice: product.comparePrice,
+                        price: product.price,
+                        image: product.imageUrl,
+                      ),
                     );
                   },
                 );
               }
             },
           ),
-        )
+        ),
       ],
     );
   }
@@ -69,19 +76,20 @@ class NewListCategoris extends StatelessWidget {
 
 class CardNewProducts extends StatelessWidget {
   const CardNewProducts({
-    super.key,
+    Key? key,
     required this.name,
     required this.price,
-    required this.compasrPrice,
+    required this.comparePrice,
     required this.image,
-    required this.quntity,
+    required this.quantity,
   });
 
   final String name;
   final double price;
-  final double compasrPrice;
+  final double comparePrice;
   final String image;
-  final int quntity;
+  final int quantity;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,10 +106,12 @@ class CardNewProducts extends StatelessWidget {
             width: double.infinity,
             color: Colors.grey,
             height: 200,
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
-            ),
+            child: (image != null && image.isNotEmpty)
+                ? Image.network(
+                    image,
+                    fit: BoxFit.cover,
+                  )
+                : Placeholder(),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -117,14 +127,16 @@ class CardNewProducts extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("$quntity",
-                        style: const TextStyle(color: Colors.blue)),
+                    Text(
+                      "$quantity",
+                      style: const TextStyle(color: Colors.blue),
+                    ),
                     Text(
                       "\$ $price",
                       style: const TextStyle(color: Colors.blue),
                     ),
                     Text(
-                      "\$ $compasrPrice",
+                      "\$ $comparePrice",
                       style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           color: Colors.red),

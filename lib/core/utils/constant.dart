@@ -6,8 +6,11 @@ class ConstantStayles {
   static const String kFeatuerdBox = 'featuerd_box';
   static TextStyle style1 =
       GoogleFonts.poppins(color: Colors.black, fontSize: 15);
-  static TextStyle style2 =
+  static TextStyle styleLight =
       GoogleFonts.poppins(color: Colors.white, fontSize: 15);
+  static TextStyle styleDark =
+      GoogleFonts.poppins(color: Colors.black, fontSize: 20);
+
   static TextStyle title =
       GoogleFonts.akayaTelivigala(color: Colors.black, fontSize: 20);
   static TextStyle subTitle = GoogleFonts.poppins(

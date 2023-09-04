@@ -86,7 +86,8 @@ class ProductModel {
   final int rating;
   final int featured;
   final List<dynamic>? options;
-  final String? imageUrl;
+  final String imageUrl;
+
   final Category category;
   final Store store;
   final List<Tag> tags;
@@ -115,44 +116,66 @@ class ProductModel {
     required this.tags,
   });
 
+
+  ProductModel.name(this.name, this.price, this.notes, this.imageUrl, this.id, this.storeId, this.categoryId, this.slug, this.comparePrice, this.quantity, this.status, this.type, this.size, this.manufacturerCompany, this.productMaterial, this.rating, this.featured, this.options, this.category, this.store, this.tags);
+
   factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
-      id: json["id"] ?? 0,
-      storeId: json["storeId"] != null ? int.parse(json["storeId"]) : 0,
-      categoryId: json["categoryId"] ?? 0,
-      name: json["name"] ?? "",
-      slug: json["slug"] ?? "",
-     price: json["price"] != null ? (json["price"] is int ? json["price"].toDouble() : json["price"]) : 0.0,
-
-      comparePrice: json["comparePrice"] != null
-          ? double.parse(json["comparePrice"])
-          : 0.0,
-      quantity: json["quantity"] != null ? (json["quantity"] is int ? json["quantity"] : int.parse(json["quantity"])) : 0,
-
-      status: json["status"] ?? "",
-      type: json["type"] ?? "",
-      notes: json["notes"] ?? "",
-size: json["size"] != null ? (json["size"] is int ? json["size"] : int.parse(json["size"])) : 0,
-      manufacturerCompany: json["manufacturerCompany"] ?? "",
-      productMaterial: json["productMaterial"] ?? "",
-rating: json["rating"] ?? 0,
-featured: json["featured"] ?? 0,
-      options: json["options"] != null
-          ? List.of(json["options"])
-              .map((i) => i /* handle properly */)
-              .toList()
-          : [],
-      imageUrl: json["imageUrl"] ?? "",
+  return ProductModel(
+    id: json["id"] ?? 0,
+    storeId: json["store_id"] != null ? int.parse(json["store_id"].toString()) : 0,
+    categoryId: json["category_id"] != null ? int.parse(json["category_id"].toString()) : 0,
+    name: json["name"] ?? "",
+    slug: json["slug"] ?? "",
+    price: json["price"] != null ? (json["price"] is int ? json["price"].toDouble() : json["price"].toDouble()) : 0.0,
+    comparePrice: json["compare_price"] != null ? json["compare_price"].toDouble() : 0.0,
+    quantity: json["quantity"] != null ? (json["quantity"] is int ? json["quantity"] : int.parse(json["quantity"].toString())) : 0,
+    status: json["status"] ?? "",
+    type: json["type"] ?? "",
+    notes: json["notes"] ?? "",
+    size: json["size"] != null ? (json["size"] is int ? json["size"] : int.parse(json["size"].toString())) : 0,
+    manufacturerCompany: json["manufacturer_company"] ?? "",
+    productMaterial: json["product_material"] ?? "",
+    rating: json["rating"] != null ? int.parse(json["rating"].toString()) : 0,
+    featured: json["featured"] != null ? int.parse(json["featured"].toString()) : 0,
+    options: json["options"] != null
+        ? List<dynamic>.from(json["options"])
+        : [],
+    imageUrl: json["image_url"] ?? "",
     category: json["category"] != null
-    ? Category.fromJson(json["category"] as Map<String, dynamic>)
-    : Category(0, "", null),
+        ? Category.fromJson(json["category"])
+        : Category(0, "", null),
+    store: json["store"] != null
+        ? Store.fromJson(json["store"])
+        : Store(0, "", null),
+    tags: (json['tag'] as List<dynamic>?)
+        ?.map((tagJson) => Tag.fromJson(tagJson))
+        .toList() ?? [],
+  );
+}
 
-      store: json["store"] != null ? Store.fromJson(json["store"]) : Store(0,"",null),
-      tags: (json['tag'] as List<dynamic>?)
-              ?.map((tagJson) => Tag.fromJson(tagJson))
-              .toList() ??
-          [],
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      "id": this.id,
+      "storeId": this.storeId,
+      "categoryId": this.categoryId,
+      "name": this.name,
+      "slug": this.slug,
+      "price": this.price,
+      "comparePrice": this.comparePrice,
+      "quantity": this.quantity,
+      "status": this.status,
+      "type": this.type,
+      "notes": this.notes,
+      "size": this.size,
+      "manufacturerCompany": this.manufacturerCompany,
+      "productMaterial": this.productMaterial,
+      "rating": this.rating,
+      "featured": this.featured,
+      "imageUrl": this.imageUrl,
+      "category": this.category,
+      "store": this.store,
+
+    };
   }
 
 //
@@ -208,4 +231,44 @@ class ProductList {
       json['total'],
     );
   }
+}
+
+class ProductModelDetails{
+  final int id;
+  final String name;
+  final String note;
+  final double price;
+  final String imageUrl;
+
+  ProductModelDetails(
+      {required this.id,
+     required this.name,
+     required this.note,
+     required this.price,
+     required this.imageUrl,
+     required this.quantity});
+
+  factory ProductModelDetails.fromJson(Map<String, dynamic> json) {
+    return ProductModelDetails(
+      id: int.parse(json["id"]),
+      name: json["name"],
+      note: json["note"],
+      price: double.parse(json["price"]),
+      imageUrl: json["imageUrl"],
+      quantity: int.parse(json["quantity"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": this.id,
+      "name": this.name,
+      "note": this.note,
+      "price": this.price,
+      "imageUrl": this.imageUrl,
+      "quantity": this.quantity,
+    };
+  }
+
+  final int quantity;
 }

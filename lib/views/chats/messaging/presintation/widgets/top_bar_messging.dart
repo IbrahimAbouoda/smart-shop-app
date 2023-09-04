@@ -15,7 +15,7 @@ class actionBarMessg extends StatelessWidget {
       children: [
         Text(
           "Ibrahim",
-          style: ConstantStayles.style2,
+          style: ConstantStayles.styleLight,
         ),
         const SizedBox(
           width: 20,
