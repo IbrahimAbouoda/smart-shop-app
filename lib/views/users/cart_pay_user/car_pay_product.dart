@@ -55,13 +55,23 @@ class _CarPayProductState extends State<CarPayProduct> {
                     final cartDocs = snapshot.data!.docs;
                     totalPay = 0.0; // Reset totalPay to 0.0 before recalculating
 
-                    for (final doc in cartDocs) {
-                      double price = doc['price'] as double; // Assuming 'price' is a double field in Firestore
-                      totalPay += price; // Add the price to the totalPay
-                    }
+                    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-                    // Update the total in the UserProvider
-                    Provider.of<UserProvider>(context, listen: false).updateTotal(totalPay);
+                    if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                      final cartDocs = snapshot.data!.docs;
+                      totalPay = 0.0; // Reset totalPay to 0.0 before recalculating
+
+                      for (final doc in cartDocs) {
+                        double price = doc['price'] as double; // Assuming 'price' is a double field in Firestore
+                        totalPay += price; // Add the price to the totalPay
+                      }
+
+                      // Update the total in the UserProvider
+                      userProvider.updateTotal(totalPay);
+
+                      // Update the total in Firestore if needed
+                      userProvider.updateTotalInFirestore();
+                    }
 
                     return ListView.builder(
                       itemCount: cartDocs.length,
@@ -90,59 +100,7 @@ class _CarPayProductState extends State<CarPayProduct> {
                         // Update the total in Firestore
                         userProvider.updateTotalInFirestore();
                         // Now you can access cartData and display it in your widget
-                        return Container(
-                          margin: EdgeInsets.all(15),
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Color(0xff9ca9c7),
-                            borderRadius: BorderRadius.circular(5),
-                            border:
-                            Border.all(color: ConstantStayles.kPrimColor),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text("قطعة: ${cartData['quantity']}"),
-                                  Text("\$${price}"),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  // Image.network(cartData['image']),
-                                  Text(
-                                    cartData['name'],
-                                    style: ConstantStayles.styleDark,
-                                  ),
-                                  Image.network(
-                                    cartData['image'],
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      // Handle delete action here
-                                    },
-                                    icon: Icon(
-                                      Icons.delete,
-                                      size: 30,
-                                    ),
-                                  ),
-                                  CircleAvatar(
-                                    radius: 15,
-                                    backgroundColor: backgroundColor,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
+                        return CardPay(cartData: cartData, price: price, backgroundColor: backgroundColor);
                       },
                     );
                   }
@@ -191,6 +149,76 @@ class _CarPayProductState extends State<CarPayProduct> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CardPay extends StatelessWidget {
+  const CardPay({
+    super.key,
+    required this.cartData,
+    required this.price,
+    required this.backgroundColor,
+  });
+
+  final Map<String, dynamic> cartData;
+  final double price;
+  final Color backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(15),
+      height: 100,
+      decoration: BoxDecoration(
+        color: Color(0xff9ca9c7),
+        borderRadius: BorderRadius.circular(5),
+        border:
+        Border.all(color: ConstantStayles.kPrimColor),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text("قطعة: ${cartData['quantity']}"),
+              Text("\$${price}"),
+            ],
+          ),
+          Column(
+            children: [
+              // Image.network(cartData['image']),
+              Text(
+                cartData['name'],
+                style: ConstantStayles.styleDark,
+              ),
+              Image.network(
+                cartData['image'],
+                height: 50,
+                width: 50,
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              IconButton(
+                onPressed: () {
+                  // Handle delete action here
+                },
+                icon: Icon(
+                  Icons.delete,
+                  size: 30,
+                ),
+              ),
+              CircleAvatar(
+                radius: 15,
+                backgroundColor: backgroundColor,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

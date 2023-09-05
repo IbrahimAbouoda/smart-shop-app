@@ -22,7 +22,6 @@ class ChoosTager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List imageCategoris = [Assets.children, Assets.harim, Assets.manCategor];
 
     final StoreService storeService = StoreService();
     final Future<List<StoreModel>> storis = storeService.getStores();

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:gaza_shop/views/users/home/views/home%20category/category_prof.dart';
 import '../../components/derwer_user.dart';
 import '../../components/drewerAdmin.dart';
 import '../../components/who_me.dart';
+import '../../views/users/cart_pay_user/car_pay_product.dart';
 import '../settings/settings.dart';
 import '../../views/General/change_pass_screen.dart';
 import '../../views/General/defineing/presintation/define1_screen.dart';
@@ -11,7 +13,7 @@ import '../../views/General/login/success.dart';
 import '../../views/admin/add products/views/add_product_screen1.dart';
 import '../../views/admin/add store/add_store_screen.dart';
 import '../../views/admin/count bay/count_bay.dart';
-import '../../views/admin/home/views/home_distrbute_screen.dart' as AdminHome;
+import '../../views/admin/home/views/home_distrbute_screen.dart' ;
 import '../../views/admin/notoficatios/notifictions.dart';
 import '../../views/admin/profile/views/edit_profile.dart';
 import '../../views/admin/profile/views/myProfile.dart';
@@ -19,17 +21,16 @@ import '../../views/admin/show users/list_show_user.dart';
 import '../../views/admin/user requsts/view/requst_list.dart';
 import '../../views/chats/list chating/presintation/views/chats.dart';
 import '../../views/chats/messaging/presintation/views/messaging.dart';
-import '../../views/users/home/views/homeUser.dart';
-import '../../views/users/home/views/home_category.dart';
+import '../../views/users/home/views/home user/homeUser.dart';
+import '../../views/users/home/views/home category/home_category.dart';
 import '../../views/users/show admins/show_admins.dart';
-import '../../views/users/show all products/car_pay_product.dart';
-import '../../views/users/home/views/details_product.dart';
+import '../../views/users/home/views/details/details_product_touser.dart';
 
 import '../../components/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   "/": (context) =>  HomeUser(),
-  "/homeAdmin": (context) => AdminHome.HomeAdmin(),
+  "/homeAdmin": (context) => HomeAdmin(),
   "/AddStore": (context) => const AddStore(),
   "/AddProduct1": (context) => const AddProduct(),
   "/profile": (context) => Profile(),
@@ -47,9 +48,10 @@ Map<String, Widget Function(BuildContext)> routes = {
   "/login_signUp": (context) => const LoginAdminScreen(),
   "/homeUser": (context) => const HomeUser(),
   "/homeCategory": (context) => const HomeCategory(),
+  "/prof_category": (context) => const CategoryProf(),
   "/showAdmin": (context) => ShowAdmins(),
   "/menuUser": (context) => DrewerUser(),
-  "/details_product": (context) => DetailsProduct(),
+  "/details_product": (context) => DetailsProductUser(),
   "/carPay": (context) => const CarPayProduct(),
   //-
   "/define": (context) => const Defin1(),

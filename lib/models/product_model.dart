@@ -239,6 +239,7 @@ class ProductModelDetails{
   final String note;
   final double price;
   final String imageUrl;
+  final String material;
 
   ProductModelDetails(
       {required this.id,
@@ -246,6 +247,7 @@ class ProductModelDetails{
      required this.note,
      required this.price,
      required this.imageUrl,
+     required this.material,
      required this.quantity});
 
   factory ProductModelDetails.fromJson(Map<String, dynamic> json) {
@@ -255,18 +257,20 @@ class ProductModelDetails{
       note: json["note"],
       price: double.parse(json["price"]),
       imageUrl: json["imageUrl"],
+      material: json["productMaterial"],
       quantity: int.parse(json["quantity"]),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": this.id,
-      "name": this.name,
-      "note": this.note,
-      "price": this.price,
-      "imageUrl": this.imageUrl,
-      "quantity": this.quantity,
+      "id": id,
+      "name": name,
+      "note": note,
+      "price": price,
+      "imageUrl": imageUrl,
+      "quantity": quantity,
+      "productMaterial": material,
     };
   }
 

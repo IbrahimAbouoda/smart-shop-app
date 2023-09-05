@@ -6,9 +6,11 @@ class UserProvider extends ChangeNotifier {
 
   // Method to update the total
   void updateTotal(double newTotal) {
+
     total = newTotal;
     notifyListeners(); // Notify listeners to rebuild widgets
   }
+
 
 
 Future<void> updateTotalInFirestore() async {

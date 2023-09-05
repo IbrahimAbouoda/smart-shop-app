@@ -16,34 +16,43 @@ class UserModel {
     required this.email,
     required this.role,
     required this.token,
-    required total,
+     this.total,
   });
 
   factory UserModel.fromFirebase(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final data = snapshot.data();
+    final role = data?['role'];
+    double? total = role == 'user' && data != null ? data['total'] as double : null;
     return UserModel(
       imageUrl: data?['imageUrl'],
       name: data?['name'],
       email: data?['email'],
-      role: data?['role'],
+      role: role,
       token: data?['token'],
-      total: data?['total'],
+      total: total,
     );
   }
   // Factory constructor to create a UserModel instance from a map (JSON).
   factory UserModel.fromJson(Map<String, dynamic> data) {
+    final role = data['role'];
+    double? total = role == 'user' ? data['total'] as double : null; // Set total to null if the role is not 'user'
     return UserModel(
       imageUrl: data['imageUrl'],
       name: data['name'],
       email: data['email'],
-      role: data['role'],
+      role: role,
       token: data['token'],
-      total: data['total'],
+      total: total,
     );
   }
 
-  Map<String, dynamic> toFirebase() {
+
+
+
+
+
+Map<String, dynamic> toFirebase() {
     return {
       "imageUrl": imageUrl,
       "name": name,

@@ -21,10 +21,7 @@ class CategoryService {
             status: item['status'],
             notes: item['notes'],
             imageUrl: item['image_url'],
-            parent: CategoryParent(
-              name: item['parent']['name'],
-              imageUrl: item['parent']['image_url'],
-            ),
+
           ));
         }
         return categories;
