@@ -7,6 +7,7 @@ import '../service/backend/product_service.dart';
 class ProductProvider with ChangeNotifier {
   List<ProductModel> _products = [];
 
+
   List<ProductModel> get products => _products;
   //send data to api
   // void _submitProduct() {

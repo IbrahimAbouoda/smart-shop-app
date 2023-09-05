@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gaza_shop/generated/l10n.dart';
+import 'package:gaza_shop/providers/users_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'components/general_provider.dart';
@@ -35,8 +36,8 @@ void main() async {
         create: (context) => ProductService()),
     ChangeNotifierProvider<GeneralProvider>(
         create: (context) => GeneralProvider()),
-    // ChangeNotifierProvider<CategoriesProvider>(
-    // create: (context) => CategoriesProvider()),
+    ChangeNotifierProvider<UserProvider>(
+    create: (context) => UserProvider()),
     // ChangeNotifierProvider<MailsByTagsProvider>(
     // create: (context) => MailsByTagsProvider()),
   ], child: const MyApp()));
