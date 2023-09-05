@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gaza_shop/providers/users_provider.dart';
@@ -26,7 +28,7 @@ class _CarPayProductState extends State<CarPayProduct> {
 
   @override
   Widget build(BuildContext context) {
-    double totalPay = Provider.of<UserProvider>(context,).total;
+    double totalPay = 0.0;
     return Consumer<UserProvider>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
@@ -51,6 +53,16 @@ class _CarPayProductState extends State<CarPayProduct> {
                     return Center(child: Text("No products in the cart."));
                   } else {
                     final cartDocs = snapshot.data!.docs;
+                    totalPay = 0.0; // Reset totalPay to 0.0 before recalculating
+
+                    for (final doc in cartDocs) {
+                      double price = doc['price'] as double; // Assuming 'price' is a double field in Firestore
+                      totalPay += price; // Add the price to the totalPay
+                    }
+
+                    // Update the total in the UserProvider
+                    Provider.of<UserProvider>(context, listen: false).updateTotal(totalPay);
+
                     return ListView.builder(
                       itemCount: cartDocs.length,
                       itemBuilder: (context, index) {
@@ -72,7 +84,11 @@ class _CarPayProductState extends State<CarPayProduct> {
                           double price = cartData['price'] as double; // Assuming 'price' is an integer field in Firestore
                           totalPay += 20; // Add the price to the totalPay
 
+                        final userProvider = Provider.of<UserProvider>(context, listen: false);
+                        userProvider.updateTotal(totalPay);
 
+                        // Update the total in Firestore
+                        userProvider.updateTotalInFirestore();
                         // Now you can access cartData and display it in your widget
                         return Container(
                           margin: EdgeInsets.all(15),
@@ -155,12 +171,15 @@ class _CarPayProductState extends State<CarPayProduct> {
                       height: 50,
                       margin: const EdgeInsets.all(8),
                       color: ConstantStayles.kPrimColor,
-                      child: Text(
-                        "اجمالي المبلغ $totalPay",
-                        style: ConstantStayles.styleLight,
-                      ),
-                    ),
-                  ),
+                      child:  Consumer<UserProvider>(
+                        builder: (context, userProvider, child) {
+                          // Access the total from the provider
+                          double total = userProvider.total;
+                          return Text(
+                            "اجمالي المبلغ $total",style: ConstantStayles.styleLight,
+                          );
+                        }),
+                  ),),
                 ],
               ),
             ),
