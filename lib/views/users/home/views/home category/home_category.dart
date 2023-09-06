@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gaza_shop/components/widgets/general_widgets/buttonApp.dart';
+import 'package:gaza_shop/views/users/home/views/home%20category/widgets/new_list_category.dart';
 import '../../../../../models/product_model.dart';
 import '../../../../../service/backend/product_service.dart';
 import 'widgets/choos_part.dart';
@@ -15,14 +16,13 @@ class HomeCategory extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Home Category'),
+        title: Text('الاقسام الرئيسية'),
       ),
       body: Column(
         children: [
           ChoesGeneralPart(
-            onTap: () {
-              Navigator.pushNamed(context, "/homeCategory");
-            },
+
+
           ),
           Expanded(
             child: FutureBuilder<List<ProductModel>>(
@@ -71,82 +71,6 @@ class HomeCategory extends StatelessWidget {
             ),
           ),
           ButtonAppBar1(onTapHome: ()=>Navigator.pushNamed(context, "/homeUser"),)
-        ],
-      ),
-    );
-  }
-}
-
-class NewListCategoris extends StatelessWidget {
-  const NewListCategoris({
-    Key? key,
-    required this.title,
-    required this.price,
-    required this.comparePrice,
-    required this.name,
-    required this.quantity,
-    required this.image,
-  }) : super(key: key);
-
-  final String title;
-  final String price;
-  final String comparePrice;
-  final String name;
-  final String quantity;
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 100,
-            alignment: Alignment.center,
-padding: EdgeInsets.only(top: 5),
-            width: double.infinity,
-            child: Expanded(
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Image.network(
-                  image,
-                  fit: BoxFit.cover,alignment: Alignment.center
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  'السعر: $price',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-                Text(
-                  'خصم: $comparePrice',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.red,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                ),
-                Text(
-                  'الكمية: $quantity',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

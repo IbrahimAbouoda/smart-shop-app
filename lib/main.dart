@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gaza_shop/generated/l10n.dart';
 import 'package:gaza_shop/providers/users_provider.dart';
+import 'package:gaza_shop/views/users/cart_pay_user/payment/dio.dart';
 import 'package:provider/provider.dart';
 
 import 'components/general_provider.dart';
@@ -28,7 +29,8 @@ void main() async {
   FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
     SharedPrefController.saveToken(newToken);
   });
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await DioHelperPayment.init();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ProductProvider>(
         create: (context) => ProductProvider()),

@@ -29,7 +29,7 @@ import '../../views/users/home/views/details/details_product_touser.dart';
 import '../../components/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
-  "/": (context) =>  HomeUser(),
+  "/": (context) =>  Splash(),
   "/homeAdmin": (context) => HomeAdmin(),
   "/AddStore": (context) => const AddStore(),
   "/AddProduct1": (context) => const AddProduct(),

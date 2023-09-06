@@ -12,7 +12,7 @@ class SuccessLogin extends StatelessWidget {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-          Navigator.pushNamed(context, "/AddStore");
+          Navigator.pushNamed(context, "/carPay");
       },
     );
     return Scaffold(

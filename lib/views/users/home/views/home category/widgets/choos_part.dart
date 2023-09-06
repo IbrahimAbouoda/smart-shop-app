@@ -1,5 +1,8 @@
-  import 'package:flutter/material.dart';
+  import 'dart:math';
+
+import 'package:flutter/material.dart';
   import 'package:gaza_shop/service/backend/categories.dart';
+import 'package:hive/hive.dart';
   import 'package:html_unescape/html_unescape.dart';
   
   import '../../../../../../core/utils/app_images.dart';
@@ -9,6 +12,7 @@
   import '../../../../../../service/backend/store_servic.dart';
   
   class ChoesGeneralPart extends StatelessWidget {
+
     String removeHtmlTags(String htmlString) {
       final unescape = HtmlUnescape();
       String noHtml = unescape.convert(htmlString); // Decode HTML entities
@@ -31,6 +35,7 @@
         child: Column(
           children: [
             Container(
+              margin: EdgeInsets.all(10),
               alignment: Alignment.topRight,
               height: 30,
               child: const Expanded(
@@ -53,22 +58,22 @@
                   } else if (snapshot.hasData) {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 3,
+                      itemCount: snapshot.data!.length >= 4 ? 4 : snapshot.data!.length, // Ensure we have at most 4 items
                       itemBuilder: (context, index) {
+                        int reversedIndex = snapshot.data!.length - index - 1; // Reverse the index
                         CategoryModel category = snapshot.data![index];
 
                         return ChoesCategoryPart(
                           name: category.name,
                           image: category.imageUrl,
-
                           onTap: () {
-                            int categoryId =category.id;
-                            Navigator.pushNamed(context, "/prof_category",arguments: categoryId);
-
-                          }
+                            int categoryId = category.id;
+                            Navigator.pushNamed(context, "/prof_category", arguments: categoryId);
+                          },
                         );
                       },
                     );
+
                   } else {
                     return const Center(child: Text("No data available"));
                   }
@@ -98,8 +103,11 @@
     Widget build(BuildContext context) {
       return GestureDetector(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
+        child: Container(
+          alignment: Alignment.center,
+          height: 100,
+
+          decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.circular(3)),
           child: Container(
             padding: const EdgeInsets.all(5),
             child: Column(

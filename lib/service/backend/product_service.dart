@@ -56,7 +56,7 @@ class ProductService extends ChangeNotifier {
       return Future.error(e); // You can return an error message or handle it as needed.
     }
   }
-  Future<List<ProductModel>> getProductsTrending() async {
+  Future<List<ProductModel>> getProductsAcordingCategoryID(categoryId) async {
     try {
       final http.Response response = await http.get(Uri.parse(productUrl));
 

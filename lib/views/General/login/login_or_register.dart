@@ -265,17 +265,17 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                                   Navigator.pushNamed(
                                                                       context,
                                                                       "/homeAdmin");
-                                                                } else {}
-                                                                Navigator.pushNamed(
+                                                                } else { Navigator.pushNamed(
                                                                     context,
                                                                     "/homeUser");
                                                                 ScaffoldMessenger.of(
-                                                                        context)
+                                                                    context)
                                                                     .showSnackBar(
                                                                   SnackBar(
                                                                       content: Text(
                                                                           "login user ${userLogin.user!.email.toString().trim()}")),
-                                                                );
+                                                                );}
+
                                                               }
                                                             } else {
                                                               ScaffoldMessenger
@@ -363,7 +363,7 @@ class _LoginAdminScreenState extends State<LoginAdminScreen> {
                                                               // ignore: use_build_context_synchronously
                                                               Navigator.pushNamed(
                                                                   context,
-                                                                  "/homeAdmin");
+                                                                  "/login_signUp");
                                                             } else {}
                                                             Navigator.pushNamed(
                                                                 context,
