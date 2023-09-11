@@ -51,14 +51,14 @@ class DrwerAdmin extends StatelessWidget {
                   title: const Text('الزبون'),
                   onTap: () {
                     // Update the UI to refresh
-                    Navigator.pushNamed(context, "/showAdmins");
+                    Navigator.pushNamed(context, "/showUser");
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.man_4_outlined),
                   title: const Text('صفحتي'),
                   onTap: () {
-                    Navigator.pushNamed(context, "/myProfile");
+                    Navigator.pushNamed(context, "/profile");
                   },
                 ),
                 ListTile(
@@ -88,7 +88,7 @@ class DrwerAdmin extends StatelessWidget {
                   title: const Text(' اضافة منتج'),
                   onTap: () {
                     // Perform logout functionality
-                    Navigator.pushNamed(context, "/AddProduct");
+                    Navigator.pushNamed(context, "/AddProduct1");
                   },
                 ),
                 ListTileProfiles(

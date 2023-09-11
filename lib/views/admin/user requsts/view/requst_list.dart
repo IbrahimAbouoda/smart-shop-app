@@ -16,7 +16,7 @@ class ListRequst extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: const TopBarApp1(titel: "الطلبات"),
+          title: Text("تصنيفات الزبون "),
           bottom: TabBar(
             tabs: <Widget>[
               Tab(

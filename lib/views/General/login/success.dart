@@ -31,7 +31,9 @@ class SuccessLogin extends StatelessWidget {
                   width: double.infinity,
                   alignment: Alignment.centerRight,
                   child: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.close))),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }, icon: const Icon(Icons.close))),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

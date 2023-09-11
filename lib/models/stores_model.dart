@@ -26,3 +26,15 @@ class StoreModel {
     );
   }
 }
+
+
+class StoreModelADDF {
+
+  final String name;
+
+  final String notes;
+
+  final String imageUrl;
+
+  StoreModelADDF({required this.name,required this.notes,required this.imageUrl});
+}

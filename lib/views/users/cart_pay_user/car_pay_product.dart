@@ -20,7 +20,31 @@ class CarPayProduct extends StatefulWidget {
 
 class _CarPayProductState extends State<CarPayProduct> {
   late Stream<QuerySnapshot> cartStream;
+  double totalPay = 0.0; // Initialize totalPay
+  Future<void> addTotalToFirestore(double total) async {
+    final user = FirebaseAuth.instance.currentUser;
 
+    if (user != null) {
+      final userId = user.uid;
+      final userRef = FirebaseFirestore.instance.collection('Users').doc(userId);
+
+      await userRef.update({
+        'total': total,
+      });
+    }
+  }Future<void> deleteCartItem(String cartItemId) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final userId = user.uid;
+      final cartItemRef = FirebaseFirestore.instance.collection('Carts').doc(userId);
+
+      // Delete the cart item with the provided cartItemId
+      await cartItemRef.update({
+        'cartItems': FieldValue.arrayRemove([cartItemId]),
+      });
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -30,11 +54,10 @@ class _CarPayProductState extends State<CarPayProduct> {
 
   @override
   Widget build(BuildContext context) {
-    double totalPay = 0.0;
     return Consumer<UserProvider>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
-          title: const Text("سلة المشتريات"),
+          title: const Text("المخزون"),
         ),
         body: Column(
           children: [
@@ -53,34 +76,32 @@ class _CarPayProductState extends State<CarPayProduct> {
                   } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return const Center(child: Text("No products in the cart."));
                   } else {
-                    final cartDocs = snapshot.data!.docs;
                     totalPay =
-                        0.0; // Reset totalPay to 0.0 before recalculating
+                    0.0; // Reset totalPay to 0.0 before recalculating
 
-                    final userProvider =
-                        Provider.of<UserProvider>(context, listen: false);
+                    final cartDocs = snapshot.data!.docs;
 
                     if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                       final cartDocs = snapshot.data!.docs;
-                      totalPay =
-                          0.0; // Reset totalPay to 0.0 before recalculating
 
                       for (final doc in cartDocs) {
                         double price = doc['price']
-                            as double; // Assuming 'price' is a double field in Firestore
+                        as double; // Assuming 'price' is a double field in Firestore
                         totalPay += price; // Add the price to the totalPay
                       }
-
-                      // Update the total in the UserProvider
-                      userProvider.updateTotal(totalPay);
-
-                      // Update the total in Firestore if needed
-                      userProvider.updateTotalInFirestore();
                     }
+
+                    // Update the total in the UserProvider
+                    final userProvider = Provider.of<UserProvider>(context, listen: false);
+                    userProvider.updateTotal(totalPay);
+
+                    // Update the total in Firestore if needed
+                    userProvider.updateTotalInFirestore();
 
                     return ListView.builder(
                       itemCount: cartDocs.length,
                       itemBuilder: (context, index) {
+                        // ... (the rest of your code)
                         Map<String, Color> colorMap = {
                           'orange': Colors.orange,
                           'purpleAccent': Colors.purpleAccent,
@@ -91,23 +112,26 @@ class _CarPayProductState extends State<CarPayProduct> {
                         };
 
                         final cartData =
-                            cartDocs[index].data() as Map<String, dynamic>;
+                        cartDocs[index].data() as Map<String, dynamic>;
                         String colorName = cartData['color'];
                         Color backgroundColor =
                             colorMap[colorName] ?? Colors.black;
-
+                        String cartItemId = cartDocs[index].id;
                         double price = cartData['price']
-                            as double; // Assuming 'price' is an integer field in Firestore
+                        as double; // Assuming 'price' is an integer field in Firestore
                         totalPay += 20; // Add the price to the totalPay
 
                         final userProvider =
-                            Provider.of<UserProvider>(context, listen: false);
+                        Provider.of<UserProvider>(context, listen: false);
                         userProvider.updateTotal(totalPay);
 
                         // Update the total in Firestore
                         userProvider.updateTotalInFirestore();
                         // Now you can access cartData and display it in your widget
                         return CardPay(
+                          onDelete: (){
+                            deleteCartItem(cartItemId);
+                          },
                             cartData: cartData,
                             price: price,
                             backgroundColor: backgroundColor);
@@ -117,60 +141,52 @@ class _CarPayProductState extends State<CarPayProduct> {
                 },
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ToggleScreen(),
-                          )),
-                      child: Container(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ToggleScreen(),
+                        )),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      margin: const EdgeInsets.all(8),
+                      color: ConstantStayles.kPrimColor,
+                      child: Text(
+                        "شراء الان",
+                        style: ConstantStayles.styleLight,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
                         alignment: Alignment.center,
                         height: 50,
                         margin: const EdgeInsets.all(8),
                         color: ConstantStayles.kPrimColor,
-                        child: Text(
-                          "شراء الان",
-                          style: ConstantStayles.styleLight,
-                        ),
+                        child: Consumer<UserProvider>(
+                            builder: (context, userProvider, child) {
+                              // Access the total from the provider
+                              double total = userProvider.total;
+                              return TextButton(onPressed:(){
+                                addTotalToFirestore(total);
+                              },
+                             child:Text(   "  احجز $total ",
+                                style: ConstantStayles.styleLight,)
+                              );
+                            }),
                       ),
-                    ),
+                    ],
                   ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          margin: const EdgeInsets.all(8),
-                          color: ConstantStayles.kPrimColor,
-                          child: Consumer<UserProvider>(
-                              builder: (context, userProvider, child) {
-                            // Access the total from the provider
-                            double total = userProvider.total;
-                            return Text(
-                              "اجمالي المبلغ $total",
-                              style: ConstantStayles.styleLight,
-                            );
-                          }),
-                        ),
-                        GestureDetector(onTap: () async {
-                      final userProvider =
-                          Provider.of<UserProvider>(context, listen: false);
-                      double total = userProvider.total;
-
-                      // Add the total to Firestore
-                      await addTotalToFirestore(total);
-                    }, child: const Text("حجز")),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             Expanded(
               flex: 1,
@@ -182,18 +198,5 @@ class _CarPayProductState extends State<CarPayProduct> {
         ),
       ),
     );
-  }
-}
-
-Future<void> addTotalToFirestore(double total) async {
-  final user = FirebaseAuth.instance.currentUser;
-
-  if (user != null) {
-    final userId = user.uid;
-    final userRef = FirebaseFirestore.instance.collection('Users').doc(userId);
-
-    await userRef.update({
-      'total': total,
-    });
   }
 }

@@ -66,6 +66,7 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title:Text("اضافة منتج")),
       body: Padding(
         padding:
             const EdgeInsets.only(top: 40, bottom: 20, right: 40, left: 40),

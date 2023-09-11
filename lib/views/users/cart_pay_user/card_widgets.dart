@@ -8,9 +8,9 @@ class CardPay extends StatelessWidget {
     super.key,
     required this.cartData,
     required this.price,
-    required this.backgroundColor,
+    required this.backgroundColor, this.onDelete,
   });
-
+final void Function()? onDelete;
   final Map<String, dynamic> cartData;
   final double price;
   final Color backgroundColor;
@@ -55,7 +55,7 @@ class CardPay extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  // Handle delete action here
+                  onDelete;
                 },
                 icon: Icon(
                   Icons.delete,

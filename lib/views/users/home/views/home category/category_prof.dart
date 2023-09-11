@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:gaza_shop/components/widgets/general_widgets/buttonApp.dart';
+import 'package:gaza_shop/views/users/home/views/home%20category/serch_products.dart';
 import 'package:gaza_shop/views/users/home/views/home%20category/widgets/new_list_category.dart';
 import 'package:html_unescape/html_unescape.dart';
 import '../../../../../core/utils/constant.dart';
@@ -19,17 +18,24 @@ class CategoryProf extends StatelessWidget {
     final productService = ProductService();
     final Future<List<ProductModel>> products = productService.getProductsAcordingCategoryID(1); // Replace 1 with the desired category ID
 
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('الاقسام الفرعية'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          ChoesGeneralPart(
-
-
-          ),
+          ChoesGeneralPart(),
           Expanded(
             child: FutureBuilder<List<ProductModel>>(
               future: products,
@@ -48,19 +54,24 @@ class CategoryProf extends StatelessWidget {
                       mainAxisSpacing: 10,
                       childAspectRatio: 0.8, // Adjust the aspect ratio as needed
                     ),
-                    itemCount:snapshot.data!.length-4,
+                    itemCount: snapshot.data!.length - 4,
                     itemBuilder: (context, index) {
-                      final product = snapshot.data![index+4];
+                      final product = snapshot.data![index + 4];
                       ProductModelDetails dataProduct = ProductModelDetails(
                         id: product.id,
                         name: product.name,
                         note: product.notes,
                         price: product.price,
                         imageUrl: product.imageUrl,
-                        quantity: product.quantity, material: product.productMaterial,);
+                        quantity: product.quantity,
+                        material: product.productMaterial,
+                      );
                       return GestureDetector(
                         onTap: () => Navigator.pushNamed(
-                            context, "/details_product",arguments: dataProduct),
+                          context,
+                          "/details_product",
+                          arguments: dataProduct,
+                        ),
                         child: NewListCategoris(
                           image: product.imageUrl,
                           title: "الترند",
@@ -76,7 +87,7 @@ class CategoryProf extends StatelessWidget {
               },
             ),
           ),
-          ButtonAppBar1(onTapHome: ()=>Navigator.pushNamed(context, "/homeUser"),)
+          ButtonAppBar1(onTapHome: () => Navigator.pushNamed(context, "/homeUser")),
         ],
       ),
     );
